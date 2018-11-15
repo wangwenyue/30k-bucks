@@ -22,4 +22,7 @@ yarn-debug.log*
 yarn-error.log*
 
 .idea
+
+# lesson 0
 main.pak
+main__.js

@@ -26,22 +26,35 @@ const getTarget = (bufferMapper) => {
   return k
 }
 
-const translate = (k, bufferMapper) => {
+const translate = (k, buf) => {
   let res = ''
-  for (let bit of bufferMapper) {
-    const d = bit ^ k
-    res += String.fromCharCode(d)
+  for (let bit of buf) {
+    const b = bit ^ k
+    if (0 <= b && b <= 127) {
+      res += String.fromCharCode(b)
+    } else {
+      res += b
+    }
   }
-  log(res)
   return res
+}
+
+const test = (buf) => {
+  const buffer = buf.slice(0, 1000)
+  for (let i = 0; i <= 255; i++) {
+    const result = translate(i, buffer)
+    log(`第${i}：`, result)
+  }
 }
 
 const __main = () => {
   const buf = fs.readFileSync('main.pak')
   const bufferMapper = getBufferMap(buf)
+  // k === 247 for sure
   const k = getTarget(bufferMapper)
-  const txt = translate(k, bufferMapper)
-  // log('xor index', txt)
+  const plainTxt = translate(k, buf.slice(0, 100000))
+  log('plainTxt', plainTxt)
+  // test(buf)
 }
 
 __main()

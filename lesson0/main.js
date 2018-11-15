@@ -26,11 +26,22 @@ const getTarget = (bufferMapper) => {
   return k
 }
 
+const translate = (k, bufferMapper) => {
+  let res = ''
+  for (let bit of bufferMapper) {
+    const d = bit ^ k
+    res += String.fromCharCode(d)
+  }
+  log(res)
+  return res
+}
+
 const __main = () => {
   const buf = fs.readFileSync('main.pak')
   const bufferMapper = getBufferMap(buf)
   const k = getTarget(bufferMapper)
-  log('xor index', k)
+  const txt = translate(k, bufferMapper)
+  // log('xor index', txt)
 }
 
 __main()
